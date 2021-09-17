@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 16:03:10 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/15 15:07:06 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/17 15:44:18 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,20 @@ void fill_data(t_data *data, char **av)
 	data->e_eat = 0;
 	if(av[5])
 		data->e_eat = atoi_positif(av[5]);
-	data->i_philo = 1;
+	data->tmp_i_philo = 1;
+	print_data(data);
+	dprintf(1,"un\n");
+	data->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) \
+			* data->n_philo);
 	while(i < data->n_philo)
 	{
-		pthread_mutex_init(data->fork[i]);
+		pthread_mutex_init(&data->fork[i], NULL);
 		i++;
 	}
+	dprintf(1,"deux\n");
 
 }
+
 void print_data(t_data *data)
 {
 	printf("DATA \n___________________________\n");
@@ -81,5 +87,14 @@ void print_data(t_data *data)
 	if(data->e_eat)
 		printf("each eat = %d\n",data->e_eat);
 	printf("time = %d\n",data->time_start);
+	printf("___________________________\n");
+}
+
+void print_data(t_philo *philo)
+{
+	printf("PHILO \n___________________________\n");
+	printf("fork1 = %d\n", philo->fork1);
+	printf("fork2 = %d\n", philo->fork2);
+	printf("id philo = %d\n",philo->i_philo);
 	printf("___________________________\n");
 }

@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 10:12:22 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/15 14:56:54 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/17 15:44:15 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,26 @@ void free_data(t_data *data)
 	free(data->philo);
 }
 
-void *philo(void *osef)
+init_forks()
+{
+	
+}
+
+void *philo(void *arg)
 {
 	t_data *data;
+	t_philo d_philo;
 	int index_philo;
+	
+	data = arg;
 
-	data = osef;
-	index_philo = data->i_philo;
-	data->i_philo++;
+	data->d_philo = &d_philo;
 
-	usleep(5000);
-	dprintf(1,"coucou je suis le philo %d\n",index_philo);
+	data->d_philo->i_philo = data->tmp_i_philo;
+	data->tmp_i_philo++;
+
+	dprintf(1,"coucou je suis le philo %d\n",d_philo.i_philo);
+	usleep(20);
+	dprintf(1,"coucou je suis le philo %d\n",d_philo.i_philo);
 	return(0);
 }

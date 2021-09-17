@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 16:12:59 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/15 14:07:29 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/17 15:44:20 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,29 @@
 #include <sys/time.h>
 #include <stdlib.h>
 
+typedef struct s_philo
+{
+	int fork1;
+	int fork2;
+	int i_philo;
+	
+}	t_philo;
+
 typedef struct s_data
 {
 	int	n_philo;
+	int tmp_i_philo;
 	int	t_die;
 	int	t_eat;
 	int	t_sleep;
 	int	e_eat;
-	int i_philo;
 	int time_start;
 
 	pthread_t *philo;
 	pthread_mutex_t *fork;
 	pthread_mutex_t *print;
+	t_philo *d_philo;
 }	t_data;
-
-typedef struct s_philo
-{
-	
-}	t_philo;
-
 
 int	error(char *s);
 int parse_arg(int ac, char **av);
