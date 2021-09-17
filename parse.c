@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 16:03:10 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/14 15:17:09 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/15 15:07:06 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int parse_arg(int ac, char **av)
 		ac--;
 	}
 	return(0);
-} 
+}
 
 int error(char *s)
 {
@@ -53,24 +53,33 @@ int error(char *s)
 
 void fill_data(t_data *data, char **av)
 {
-	data->number_of_philosophers = atoi_positif(av[1]);
-	data->time_to_die = atoi_positif(av[2]);
-	data->time_to_eat = atoi_positif(av[3]);
-	data->time_to_sleep = atoi_positif(av[4]);
-	data->each_eat = 0;
+	int i;
+
+	i = 0;
+	data->n_philo = atoi_positif(av[1]);
+	data->t_die = atoi_positif(av[2]);
+	data->t_eat = atoi_positif(av[3]);
+	data->t_sleep = atoi_positif(av[4]);
+	data->e_eat = 0;
 	if(av[5])
-		data->each_eat = atoi_positif(av[5]);
-	data->time = gettimeofday(&begin-time, NULL);
+		data->e_eat = atoi_positif(av[5]);
+	data->i_philo = 1;
+	while(i < data->n_philo)
+	{
+		pthread_mutex_init(data->fork[i]);
+		i++;
+	}
+
 }
 void print_data(t_data *data)
 {
 	printf("DATA \n___________________________\n");
-	printf("nb philo = %d\n", data->number_of_philosophers);
-	printf("time to die = %d\n", data->time_to_die);
-	printf("time to eat = %d\n", data->time_to_eat);
-	printf("time to sleep = %d\n", data->time_to_sleep);
-	if(data->each_eat)
-		printf("each eat = %d\n",data->each_eat);
-	printf("time = %d\n",data->time);
+	printf("nb philo = %d\n", data->n_philo);
+	printf("time to die = %d\n", data->t_die);
+	printf("time to eat = %d\n", data->t_eat);
+	printf("time to sleep = %d\n", data->t_sleep);
+	if(data->e_eat)
+		printf("each eat = %d\n",data->e_eat);
+	printf("time = %d\n",data->time_start);
 	printf("___________________________\n");
 }
