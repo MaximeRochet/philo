@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 15:06:59 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/17 15:44:22 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/27 16:08:18 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int main(int ac, char **av)
 	if (parse_arg(ac,av) == -1)
 		return(-1);
 	fill_data(&data, av);
-	print_data(&data);
+//	print_data(&data);
 	start_thread(&data);
-	usleep(5000);
+//	print_data(&data);
 	return(0);
 }

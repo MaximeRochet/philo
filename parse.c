@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                             :+:      :+:    :+:   */
+/*   parse.c                                             :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 16:03:10 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/17 15:44:18 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/27 16:08:13 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ int	atoi_positif(char *s)
 	while (*s)
 	{
 		tmp = ret;
-		if (*s < '0' || *s > '9')
+		if (*s < '0' || *s > '9' || (ret * 10 + (*s - 48) < 0))
 			return (error("all arguments must be positive ints"));
 		else
 			ret = ret * 10 + (*s - 48);
-		if (ret < 0)
-			return (error("all arguments must be positive ints"));
 		s++;
 	}
 	return (ret);
@@ -60,12 +58,11 @@ void fill_data(t_data *data, char **av)
 	data->t_die = atoi_positif(av[2]);
 	data->t_eat = atoi_positif(av[3]);
 	data->t_sleep = atoi_positif(av[4]);
-	data->e_eat = 0;
+	data->e_eat = -1;
 	if(av[5])
 		data->e_eat = atoi_positif(av[5]);
 	data->tmp_i_philo = 1;
-	print_data(data);
-	dprintf(1,"un\n");
+	data->die = 0;
 	data->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) \
 			* data->n_philo);
 	while(i < data->n_philo)
@@ -73,8 +70,9 @@ void fill_data(t_data *data, char **av)
 		pthread_mutex_init(&data->fork[i], NULL);
 		i++;
 	}
-	dprintf(1,"deux\n");
-
+	pthread_mutex_init(&data->print, NULL);
+	data->time_start = get_time(); 
+	data->t_end = -1; 
 }
 
 void print_data(t_data *data)
@@ -90,11 +88,11 @@ void print_data(t_data *data)
 	printf("___________________________\n");
 }
 
-void print_data(t_philo *philo)
+void print_philo(t_philo *philo)
 {
 	printf("PHILO \n___________________________\n");
-	printf("fork1 = %d\n", philo->fork1);
-	printf("fork2 = %d\n", philo->fork2);
+	printf("forkr = %d\n", philo->forkr);
+	printf("forkl = %d\n", philo->forkl);
 	printf("id philo = %d\n",philo->i_philo);
 	printf("___________________________\n");
 }

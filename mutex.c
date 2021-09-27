@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 10:12:22 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/17 15:44:15 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/27 16:08:10 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,35 @@ void start_thread(t_data *data)
 	int i = 0;
 	void **ret_thread;
 
-	dprintf(1, "1\n");
 
 	data->philo = malloc(sizeof(pthread_t)*data->n_philo);
-
-	dprintf(1, "2\n");
+	data->time_start = get_time();
 	while(i < data->n_philo)
 	{
-		dprintf(1, "3\n");
 		pthread_create(data->philo + i, NULL, philo, data);
 		usleep(50);
 		i++;
 	}
-	dprintf(1, "1\n");
-	pthread_join(*data->philo, NULL);
-	dprintf(1, "1\n");
+	while (data->die == 0)
+		;
+	//	pthread_join(*data->philo, NULL);
 }
 
 void free_data(t_data *data)
 {
-	free(data->philo);
+	//free mutex
+	free(data);
 }
 
-init_forks()
+void init_forks(t_philo *d_philo, t_data *data)
 {
-	
+	if(d_philo->i_philo == data->n_philo)
+		d_philo->forkl = 0;
+	else 	
+		d_philo->forkl = d_philo->i_philo;
+	d_philo->forkr = d_philo->i_philo - 1;
+	d_philo->n_eat = 0;
+	d_philo->last_eat = 0;
 }
 
 void *philo(void *arg)
@@ -49,16 +53,32 @@ void *philo(void *arg)
 	t_data *data;
 	t_philo d_philo;
 	int index_philo;
-	
+
 	data = arg;
-
 	data->d_philo = &d_philo;
-
 	data->d_philo->i_philo = data->tmp_i_philo;
 	data->tmp_i_philo++;
+	init_forks(&d_philo, data);
+	//	print_philo(&d_philo);
+	action(&d_philo, data);
 
-	dprintf(1,"coucou je suis le philo %d\n",d_philo.i_philo);
-	usleep(20);
-	dprintf(1,"coucou je suis le philo %d\n",d_philo.i_philo);
+	return(0);
+}
+
+void my_print(char *str, t_philo *d_philo, t_data *data, int fork)
+{
+	pthread_mutex_lock(&data->print);
+	if(data->die == 0)
+		printf(str, since_start(data), d_philo->i_philo, fork);
+	pthread_mutex_unlock(&data->print);
+}
+
+int print_death(t_philo *d_philo, t_data *data)
+{
+	pthread_mutex_lock(&data->print);
+	if(data->die == 0)
+		printf("%d philo %d died\n",data->t_end + data->t_die, d_philo->i_philo);
+	data->die = 1;
+	pthread_mutex_unlock(&data->print);
 	return(0);
 }
