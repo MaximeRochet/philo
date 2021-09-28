@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 10:12:22 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/27 16:08:10 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/28 18:06:37 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void start_thread(t_data *data)
 {
 	int i = 0;
-	void **ret_thread;
-
 
 	data->philo = malloc(sizeof(pthread_t)*data->n_philo);
 	data->time_start = get_time();
@@ -26,9 +24,9 @@ void start_thread(t_data *data)
 		usleep(50);
 		i++;
 	}
-	while (data->die == 0)
+	while (data->die != 1 && data->d_philo->n_eat != data->e_eat)
 		;
-	//	pthread_join(*data->philo, NULL);
+	pthread_join(*data->philo, NULL);
 }
 
 void free_data(t_data *data)
@@ -52,8 +50,7 @@ void *philo(void *arg)
 {
 	t_data *data;
 	t_philo d_philo;
-	int index_philo;
-
+	
 	data = arg;
 	data->d_philo = &d_philo;
 	data->d_philo->i_philo = data->tmp_i_philo;
@@ -75,9 +72,10 @@ void my_print(char *str, t_philo *d_philo, t_data *data, int fork)
 
 int print_death(t_philo *d_philo, t_data *data)
 {
+	my_usleep(500);
 	pthread_mutex_lock(&data->print);
 	if(data->die == 0)
-		printf("%d philo %d died\n",data->t_end + data->t_die, d_philo->i_philo);
+		printf("%d philo %d died\n",data->t_end + data->t_die + 1, d_philo->i_philo);
 	data->die = 1;
 	pthread_mutex_unlock(&data->print);
 	return(0);

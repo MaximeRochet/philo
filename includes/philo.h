@@ -6,7 +6,7 @@
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 16:12:59 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/27 16:08:07 by mrochet          ###   ########lyon.fr   */
+/*   Updated: 2021/09/28 16:10:54 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_data
 	int	t_sleep;
 	int	e_eat;
 	int time_start;
+	int die;
+	int t_end;
 	pthread_t *philo;
 	pthread_mutex_t *fork;
 	pthread_mutex_t print;

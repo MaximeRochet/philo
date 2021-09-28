@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrochet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/14 11:36:22 by mrochet           #+#    #+#             */
-/*   Updated: 2021/09/14 11:36:45 by mrochet          ###   ########lyon.fr   */
+/*   Created: 2021/09/14 15:06:59 by mrochet           #+#    #+#             */
+/*   Updated: 2021/09/28 18:02:12 by mrochet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo.h" 
 
-size_t ft_strlen(char *s)
+int main(int ac, char **av)
 {
-	char *tmp;
+	t_data data;
 
-	tmp = s;
-	while(*s++)
-		;
-	return (s - tmp);
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	while (*s1 && *s1++ == *s2++)
-		;
-	return  (*s1 - *s2);
+	if (parse_arg(ac,av) == -1)
+		return(-1);
+	fill_data(&data, av);
+//	print_data(&data);
+	start_thread(&data);
+//	print_data(&data);
+	return(0);
 }
